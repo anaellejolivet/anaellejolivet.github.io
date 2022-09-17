@@ -1,28 +1,24 @@
-function arrayannalize() {
-    var array = [];
-    var sum = 0;
-    var greater = [];
+var date = new Date;
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-    for (let i = 0; i < 5; i++) {
-        array.push(Math.floor(Math.random() * 100));
-    }
-
-    for (let i = 0; i < array.length; i++) {
-        sum += array[i];
-    }
-    var mean = sum / array.length;
-
-    for (let i = 0; i < array.length; i++) {
-        if (array[i] > mean) {
-            greater.push(array[i]);
-        }
-    }
-
-    document.querySelector("#arrayOut").innerHTML = "The array is:" + array + "<br> The mean is:" + mean + "<br>Greater:" + greater;
+function datetimepopup() {
+    var year = date.getFullYear();
+    var month = months[date.getMonth()];
+    var day = date.getDay();
+    var hours12 = (document.getElementById("Hours").selectedIndex == 0 ? true : false);
+    var hour = date.getHours();
+    hour = (hours12 ? hour % 12 : hour);
+    var minutes = date.getMinutes();
+    alert("The date today is: " + month + " " + day + " , " + year + " and the current time is: " + hour + ":" + minutes);
+}
+function datetimepage() {
+    var year = date.getFullYear();
+    var month = months[date.getMonth()];
+    var day = date.getDay();
+    var hours12 = (document.getElementById("Hours").selectedIndex == 0 ? true : false);
+    var hour = date.getHours();
+    hour = (hours12 ? hour % 12 : hour);
+    var minutes = date.getMinutes();
+    document.querySelector("#arrayOut").innerHTML = "The date today is: " + month + " " + day + " , " + year + "<br> and the current time is: " + hour + ":" + minutes;
 }
 
-
-
-hours12 = (document.getElementById("Hours").selectedIndex == 0 ? true : false);
-hour = date.getHours();
-hour = (hours12 ? hour % 12 : hour);
