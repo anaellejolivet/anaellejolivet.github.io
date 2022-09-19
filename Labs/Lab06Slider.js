@@ -3,6 +3,7 @@ var gl;
 var points;
 var colors;
 var sliderVal = 1;
+var nbpoints= 0;
 
 init();
 
@@ -26,15 +27,15 @@ function init()
     ];
 
     colors=[
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 ),
-    vec4(     ,     ,     , 1.0 )
+    vec4(1.00,0.00,0.00, 1.0 ),
+    vec4(0.00,1.00,0.00, 1.0 ),
+    vec4(0.00,0.00,1.00, 1.0 ),
+    vec4(1.00,1.00,0.00, 1.0 ),
+    vec4(0.00,1.00,1.00, 1.0 ),
+    vec4(1.00,0.00,1.00, 1.0 ),
+    vec4(0.80,0.9,0.10, 1.0 ),
+    vec4(0.20,0.30,0.00, 1.0 ),
+    vec4(0.40,0.10,0.9, 1.0 )
     ];
     
     //
@@ -69,6 +70,10 @@ function init()
     gl.enableVertexAttribArray( colorLoc );
 
     // slider event listener
+    document.getElementById("slider").onchange = function(event) {
+        nbpoints = parseInt(event.target.value);
+        render();
+    };
 
     render();
 };
@@ -79,5 +84,5 @@ function render() {
     // use the variable from the slider event listener to determine how many
     // points to render
 
-    gl.drawArrays( gl.POINTS, 0,      );
+    gl.drawArrays( gl.POINTS, 0,nbpoints);
 }
