@@ -67,7 +67,25 @@ function init()
    // '2' = triangle is red (use the variable named color)
    // '3' = triangle is green (use the variable named color)
 
+   window.onkeydown = function(event) {
+    var key = String.fromCharCode(event.keyCode);
+    switch(key) {
+        //rotation
+      case '1':
+        rotation = !rotation;
+        break;
 
+        //red
+      case '2':
+        color = vec4(1.0, 0.0, 0.0, 1.0);
+        break;
+
+        //green
+      case '3':
+        color = vec4(0.0, 1.0, 0.0, 1.0);
+        break;
+    }
+};
 
     render();
 };
