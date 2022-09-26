@@ -3,10 +3,10 @@
 var canvas;
 var gl;
 
-var maxNumPositions  = 200;
+var maxNumPositions = 200;
 
 var t;
-var points=[vec2(  0.00 ,  0.00 )];
+var points = [vec2(0.00, 0.00)];
 
 init();
 
@@ -17,14 +17,22 @@ function init() {
     if (!gl) alert("WebGL 2.0 isn't available");
 
     // 2 - listener event for the button which toggles whether to save the points clicked
-    
+    var save = document.querySelector("#Button1");
+    save.addEventListener("click", function () {
+        save = !save;
+        points = [vec2(0.00, 0.00)];
+        render();
+    });
 
     // 1 - listener event for the mouse click
     // 3 - will later need to be updated in conjunction with whether the points are saved
-    canvas.addEventListener("mousedown", function(event){
-       t  = 
-       points.push(t);
-       render();
+    canvas.addEventListener("mousedown", function (event) {
+        if(!save){
+            points = [vec2(0.00, 0.00)];
+        }
+        t = vec2(2 * event.clientX / canvas.width - 1, 2 * (canvas.height - event.clientY) / canvas.height - 1);
+        points.push(t);
+        render();
     });
 
     gl.viewport(0, 0, canvas.width, canvas.height);
@@ -38,7 +46,7 @@ function init() {
 
     var bufferId = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, bufferId);
-    gl.bufferData(gl.ARRAY_BUFFER, 8*Math.pow(3, 6) , gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 8 * Math.pow(3, 6), gl.STATIC_DRAW);
     var postionLoc = gl.getAttribLocation(program, "aPosition");
     gl.vertexAttribPointer(postionLoc, 2, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(postionLoc);
@@ -48,10 +56,10 @@ function init() {
 
 function render() {
     // replace the points data in the GPU
-    gl.bufferSubData(gl.ARRAY_BUFFER , 0 , flatten(points));
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, flatten(points));
 
-    gl.clear( gl.COLOR_BUFFER_BIT );
+    gl.clear(gl.COLOR_BUFFER_BIT);
 
     // don't render the first point, (0,0)
-    gl.drawArrays( gl.POINTS , 1 , points.length-1 );
+    gl.drawArrays(gl.POINTS, 1, points.length - 1);
 }

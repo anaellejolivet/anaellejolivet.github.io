@@ -32,9 +32,9 @@ function init()
     gl.useProgram(program);
 
     var vertices = [
-        vec2(      ,      ),
-        vec2(      ,      ),
-        vec2(      ,      )
+        vec2(-0.60,-0.50),
+        vec2(0.00,0.70),
+        vec2(0.60,-0.50)
     ];
 
 
@@ -54,11 +54,13 @@ function init()
 
     //define the uniform variable in the shader, aColor
 
-
+    colorLoc = gl.getUniformLocation( program, "aColor" );
 
    // button listener here, toggle rotation
 
-
+   document.getElementById("Rotation").onclick = function () {
+    rotation = !rotation;
+};
 
    // keyboard listener here
    // '1' = toggle rotation
