@@ -51,11 +51,24 @@ function init()
 function render() {
     gl.clear( gl.COLOR_BUFFER_BIT );
 
-    gl.drawArrays( gl.POINTS, 0, points.length );
+    //gl.drawArrays( gl.POINTS, 0, points.length );
+    //show the points
+
     //gl.drawArrays( gl.LINES, 0, points.length );
+    //show lines (between two points)
+
     //gl.drawArrays( gl.LINE_STRIP, 0, points.length );
+    //show every point connect with a line
+
     //gl.drawArrays( gl.LINE_LOOP, 0, points.length );
+    //same with the first and last point connected to (loop)
+
     //gl.drawArrays( gl.TRIANGLES, 0, points.length );
+    //take 3 points and make a triangle
+
     //gl.drawArrays( gl.TRIANGLE_STRIP, 0, points.length );
-    //gl.drawArrays( gl.TRIANGLE_FAN, 0, points.length );
+    //Draws triangles between each vertex passed
+
+    gl.drawArrays( gl.TRIANGLE_FAN, 0, points.length );
+    //The first vertex of a triangle fan acts like a hub. The vertices following connect with the previous non-starting vertex and the hub
 }
