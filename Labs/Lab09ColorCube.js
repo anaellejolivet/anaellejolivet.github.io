@@ -10,7 +10,8 @@ var zAxis = 2;
 var theta = [0, 0, 0];
 var thetaLoc;
 var flag = true;
-var numElements = 29;
+var numElements = 22;
+//Take some part of the shape
 
     var vertices = [
         vec3(-0.5, -0.5,  0.5),
@@ -38,7 +39,7 @@ var numElements = 29;
 
 var indices = [
     1, 0, 3, 2, 255,
-    2, 3, 7, 2, 255,
+    2, 3, 7, 6, 255,
     3, 0, 4, 7, 255,
     6, 5, 1, 2, 255,
     4, 5, 6, 7, 255,

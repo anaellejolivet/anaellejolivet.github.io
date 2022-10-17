@@ -6,6 +6,7 @@ var gl;
 var numPositions  = 36;
 
 var positions = [];
+
 var colors = [];
 
 var xAxis = 0;
@@ -17,6 +18,8 @@ var theta = [0, 0, 0];
 
 var thetaLoc;
 
+var flag = true;
+
 init();
 
 function init()
@@ -27,6 +30,21 @@ function init()
     if (!gl) alert("WebGL 2.0 isn't available");
 
     colorCube();
+
+    //Axes
+    positions.push( vec4(0.0,0.0,0.0,1.0) );
+    colors.push( vec4(1.0,0.0,0.0,1.0) );
+    positions.push( vec4(1.0,0.0,0.0,1.0) );
+    colors.push( vec4(1.0,0.0,0.0,1.0) );
+    positions.push( vec4(0.0,0.0,0.0,1.0) );
+    colors.push( vec4(0.0,1.0,0.0,1.0) );
+    positions.push( vec4(0.0,1.0,0.0,1.0) );
+    colors.push( vec4(0.0,1.0,0.0,1.0) );
+    positions.push( vec4(0.0,0.0,0.0,1.0) );
+    colors.push( vec4(0.0,0.0,1.0,1.0) );
+    positions.push( vec4(0.0,0.0,1.0,1.0) );
+    colors.push( vec4(0.0,0.0,1.0,1.0) );
+
 
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
@@ -69,6 +87,8 @@ function init()
     document.getElementById( "zButton" ).onclick = function () {
         axis = zAxis;
     };
+
+    document.getElementById("ButtonT").onclick = function(){flag = !flag;};
 
     render();
 }
@@ -117,10 +137,10 @@ function quad(a, b, c, d)
 
     for ( var i = 0; i < indices.length; ++i ) {
         positions.push( vertices[indices[i]] );
-        //colors.push( vertexColors[indices[i]] );
+        colors.push( vertexColors[indices[i]] );
 
         // for solid colored faces use
-        colors.push(vertexColors[a]);
+        //colors.push(vertexColors[a]);
     }
 }
 
@@ -128,9 +148,12 @@ function render()
 {
     gl.clear( gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    theta[axis] += 2.0;
+    if(flag) theta[axis] += 2.0;
     gl.uniform3fv(thetaLoc, theta);
 
     gl.drawArrays(gl.TRIANGLES, 0, numPositions);
+
+    gl.drawArrays(gl.LINES, numPositions, 6);
+    
     requestAnimationFrame(render);
 }
