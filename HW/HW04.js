@@ -3,7 +3,7 @@
 var canvas;
 var gl;
 
-var numPositions  = 80;
+var numPositions  = 119;
 
 var positions = [];
 var colors = [];
@@ -19,52 +19,159 @@ var thetaLoc;
 
 var flag = false;
 
-var morph = false;
+var morph = true;
 
 var Param = 0.0;
 var tParamLoc;
 
-var vertices = [
-    vec3(-0.5, -0.5, 0.5),
-    vec3(-0.5, 0.5, 0.5),
-    vec3(0.5, 0.5, 0.5),
-    vec3(0.5, -0.5, 0.5),
-    vec3(-0.5, -0.5, -0.5),
-    vec3(-0.5, 0.5, -0.5),
-    vec3(0.5, 0.5, -0.5),
-    vec3(0.5, -0.5, -0.5)
-];
+var deltaT = 1.0;
 
 var vertexColors = [
-    vec4(0.0, 0.0, 0.0, 1.0),  // black
-    vec4(1.0, 0.0, 0.0, 1.0),  // red
-    vec4(1.0, 1.0, 0.0, 1.0),  // yellow
-    vec4(0.0, 1.0, 0.0, 1.0),  // green
-    vec4(0.0, 0.0, 1.0, 1.0),  // blue
-    vec4(1.0, 0.0, 1.0, 1.0),  // magenta
-    vec4(1.0, 1.0, 1.0, 1.0),  // white
-    vec4(0.0, 1.0, 1.0, 1.0)   // cyan
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0),  
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0),  
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0), 
+    vec4(0.0, 0.0, 1.0, 1.0),  
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0),
+    vec4(0.0, 1.0, 1.0, 1.0)
 ];
 
-// indices of the 12 triangles that compise the cube
+var verticesI = [
+
+    vec3(-0.5, -0.5, 0.5),
+    vec3(-0.5, -0.25, 0.5),
+    vec3(0.5, -0.25, 0.5),
+    vec3(0.5, -0.5, 0.5),
+    vec3(-0.5, -0.5, -0.5),
+    vec3(-0.5, -0.25, -0.5),
+    vec3(0.5, -0.25, -0.5),
+    vec3(0.5, -0.5, -0.5),
+
+    vec3(-0.2, -0.25, 0.5),
+    vec3(-0.2, 0.5, 0.5),
+    vec3(0.2, 0.5, 0.5),
+    vec3(0.2, -0.25, 0.5),
+    vec3(-0.2, -0.25, -0.5),
+    vec3(-0.2, 0.5, -0.5),
+    vec3(0.2, 0.5, -0.5),
+    vec3(0.2, -0.25, -0.5),
+
+    vec3(-0.5, 0.25, 0.5),
+    vec3(-0.5, 0.5, 0.5),
+    vec3(-0.2, 0.5, 0.5),
+    vec3(-0.2, 0.25, 0.5),
+    vec3(-0.5, 0.25, -0.5),
+    vec3(-0.5, 0.5, -0.5),
+    vec3(-0.2, 0.5, -0.5),
+    vec3(-0.2, 0.25, -0.5),
+
+    vec3(0.2, 0.25, 0.5),
+    vec3(0.2, 0.5, 0.5),
+    vec3(0.5, 0.5, 0.5),
+    vec3(0.5, 0.25, 0.5),
+    vec3(0.2, 0.25, -0.5),
+    vec3(0.2, 0.5, -0.5),
+    vec3(0.5, 0.5, -0.5),
+    vec3(0.5, 0.25, -0.5)
+
+]
+
+var verticesU = [
+
+    vec3(-0.5, -0.5, 0.5),
+    vec3(-0.5, -0.25, 0.5),
+    vec3(0.5, -0.25, 0.5),
+    vec3(0.5, -0.5, 0.5),
+    vec3(-0.5, -0.5, -0.5),
+    vec3(-0.5, -0.25, -0.5),
+    vec3(0.5, -0.25, -0.5),
+    vec3(0.5, -0.5, -0.5),
+
+    vec3(-0.2, -0.25, 0.5),
+    vec3(-0.2, -0.25, 0.5),
+    vec3(0.2, -0.25, 0.5),
+    vec3(0.2, -0.25, 0.5),
+    vec3(-0.2, -0.25, -0.5),
+    vec3(-0.2, -0.25, -0.5),
+    vec3(0.2, -0.25, -0.5),
+    vec3(0.2, -0.25, -0.5),
+
+    vec3(-0.5, -0.25, 0.5),
+    vec3(-0.5, 0.5, 0.5),
+    vec3(-0.2, 0.5, 0.5),
+    vec3(-0.2, -0.25, 0.5),
+    vec3(-0.5, -0.25, -0.5),
+    vec3(-0.5, 0.5, -0.5),
+    vec3(-0.2, 0.5, -0.5),
+    vec3(-0.2, -0.25, -0.5),
+
+    vec3(0.2, -0.25, 0.5),
+    vec3(0.2, 0.5, 0.5),
+    vec3(0.5, 0.5, 0.5),
+    vec3(0.5, -0.25, 0.5),
+    vec3(0.2, -0.25, -0.5),
+    vec3(0.2, 0.5, -0.5),
+    vec3(0.5, 0.5, -0.5),
+    vec3(0.5, -0.25, -0.5)
+
+]
 
 var indices = [
-    1, 0, 3, 2, 255,
-    2, 3, 15, 14, 255,
-    14, 15, 12, 13, 255,
-    13, 12, 0, 1, 255,
-    0, 12, 15, 3, 255,
-    1, 13, 14, 2, 255,
-    4, 5, 6, 7, 255,
-    7, 6, 18, 19, 255,
-    4, 5, 17, 16, 255,
+    0, 1, 2, 3, 255,
+    3, 2, 6, 7, 255,
+    7, 6, 5, 4, 255,
+    4, 5, 1, 0, 255,
+    0, 4, 7, 3, 255,
+    1, 5, 6, 2, 255,
+
+    8, 9, 10, 11, 255,
+    11, 10, 14, 15, 255,
+    15, 14, 13, 12, 255,
+    12, 13, 9, 8, 255,
+    8, 12, 15, 11, 255,
+    9, 13, 14, 10, 255,
+
     16, 17, 18, 19, 255,
-    8, 20, 23, 11, 255,
-    8, 9, 10, 11, 255,
-    11, 10, 22, 23, 255,
-    20, 21, 22, 23, 255,
-    8, 9, 10, 11, 255,
-    9, 21, 22, 10
+    19, 18, 22, 23, 255,
+    23, 22, 21, 20, 255,
+    20, 21, 17, 16, 255,
+    16, 20, 23, 19, 255,
+    17, 21, 22, 18, 255,
+
+    24, 25, 26, 27, 255,
+    27, 26, 30, 31, 255,
+    31, 30, 29, 28, 255,
+    28, 29, 25, 24, 255,
+    24, 28, 31, 27, 255,
+    25, 29, 30, 26, 255
 ];
 
 init();
@@ -76,7 +183,6 @@ function init() {
     gl = canvas.getContext('webgl2');
     if (!gl) alert("WebGL 2.0 isn't available");
 
-
     gl.viewport(0, 0, canvas.width, canvas.height);
     gl.clearColor(1.0, 1.0, 1.0, 1.0);
 
@@ -87,20 +193,13 @@ function init() {
     var program = initShaders(gl, "vertex-shader", "fragment-shader");
     gl.useProgram(program);
 
-    // array element buffer
+    tParamLoc = gl.getUniformLocation( program, "tParam" );
 
-    var iBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
-    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
+// array element buffer
 
-    // vertex array attribute buffer
-
-    var vBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
-    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertices), gl.STATIC_DRAW);
-    var positionLoc = gl.getAttribLocation( program, "aPosition");
-    gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(positionLoc );
+var iBuffer = gl.createBuffer();
+gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, iBuffer);
+gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint8Array(indices), gl.STATIC_DRAW);
 
     // color array atrribute buffer
 
@@ -112,15 +211,27 @@ function init() {
     gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
     gl.enableVertexAttribArray(colorLoc);
 
-    /*
-        var bufferu = gl.createBuffer();
-        gl.bindBuffer(gl.ARRAY_BUFFER, bufferu);
-        gl.bufferData(gl.ARRAY_BUFFER, flatten(U), gl.STATIC_DRAW);
+    // vertex array attribute buffer
+
+    var vBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(verticesI), gl.STATIC_DRAW);
+
+    var positionLoc = gl.getAttribLocation( program, "iPosition");
+    gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(positionLoc );
+
+    var uBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, uBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, flatten(verticesU), gl.STATIC_DRAW);
+
+
+    var positionLoc = gl.getAttribLocation(program, "uPosition");
+    gl.vertexAttribPointer(positionLoc, 3, gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(positionLoc);
     
-        var upositionLoc = gl.getAttribLocation(program, "uPosition");
-        gl.vertexAttribPointer(upositionLoc, 4, gl.FLOAT, false, 0, 0);
-        gl.enableVertexAttribArray(upositionLoc);
-    */
+
+
     thetaLoc = gl.getUniformLocation(program, "uTheta");
 
 
@@ -139,16 +250,20 @@ function init() {
 
     document.getElementById("Morph").onclick = function () {
         morph = !morph;
+        console.log(morph);
     };
 
     render();
 }
+
+
 
 function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if (flag) theta[axis] += 2.0;
     gl.uniform3fv(thetaLoc, theta);
+
 
     if (morph) {
         Param += 0.015 * deltaT;
