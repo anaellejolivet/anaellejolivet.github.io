@@ -1,5 +1,11 @@
 "use strict";
 
+/*We started with following codes:
+    Homework 4 for 3D morphing
+    Lab 14 for putting more objects on the scene
+    Lab 15 for shading*/
+
+    
 var canvas;
 var gl;
 
@@ -61,14 +67,15 @@ var program;
  * light
  * *************************************************************/
 var lightPosition = vec4(1.0, 0.0, 0.0, .0);
-var lightAmbient = vec4(1.0, 0.8, 0.8, 1.0);
-var lightDiffuse = vec4(0.0, 1.0, 1.0, 1.0);
+var lightAmbient = vec4(0.0, 0.8, 0.8, 1.0);
+var lightDiffuse = vec4(1.0, 1.0, 0.0, 1.0);
 var lightSpecular = vec4(0.0, 0.0, 1.0, 1.0);
 
-var materialAmbient  = vec4(0.0 , 1.0 , 1.0 , 1.0);
-var materialDiffuse  = vec4(0.1 , 0.1 , 0.01 , 1.0);
-var materialSpecular = vec4(0.5 , 0.5 , 0.5, 1.0);
-var materialShininess = 36.0;
+// We chose copper color from Lab 15 
+var materialAmbient  = vec4(0.19125 , 0.0735 , 0.0225 , 1.0);
+var materialDiffuse  = vec4(0.7038 , 0.27048 , 0.0828 , 1.0);
+var materialSpecular  = vec4(0.256777 , 0.137622 , 0.086014 , 1.0);
+var materialShininess = 76.8;
 
 /****************************************************************
  * S to A
@@ -762,13 +769,13 @@ function render() {
   );
 
   // ==== color buffer for cube ====
-  var cBuffer = gl.createBuffer();
+  /*var cBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(vertexColorsSA), gl.STATIC_DRAW);
 
   var colorLoc = gl.getAttribLocation(program, "aColor");
   gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(colorLoc);
+  gl.enableVertexAttribArray(colorLoc);*/
 
   // ==== bind and send vertex info for cube to vertex shader ====
   projectionMatrix = perspective(fovy, aspect, near, far);
@@ -810,13 +817,13 @@ function render() {
   );
 
   // ==== color buffer for tretrahedron ====
-  var cBuffer = gl.createBuffer();
+  /*var cBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
   gl.bufferData(gl.ARRAY_BUFFER, flatten(vertexColorsAH), gl.STATIC_DRAW);
 
   var colorLoc = gl.getAttribLocation(program, "aColor");
   gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-  gl.enableVertexAttribArray(colorLoc);
+  gl.enableVertexAttribArray(colorLoc);*/
   
   // ==== bind and send vertex info for tretrahedron to vertex shader ====
   var S = scale(0.4, 0.4, 1);
@@ -857,13 +864,13 @@ function render() {
    );
  
    // ==== color buffer for cube ====
-   var cBuffer = gl.createBuffer();
+   /*var cBuffer = gl.createBuffer();
    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertexColorsLO), gl.STATIC_DRAW);
  
    var colorLoc = gl.getAttribLocation(program, "aColor");
    gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-   gl.enableVertexAttribArray(colorLoc);
+   gl.enableVertexAttribArray(colorLoc);*/
  
    // ==== bind and send vertex info for cube to vertex shader ====
    projectionMatrix = perspective(fovy, aspect, near, far);
@@ -906,13 +913,13 @@ function render() {
    );
  
    // ==== color buffer for cube ====
-   var cBuffer = gl.createBuffer();
+   /*var cBuffer = gl.createBuffer();
    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertexColorsUJ), gl.STATIC_DRAW);
  
    var colorLoc = gl.getAttribLocation(program, "aColor");
    gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-   gl.enableVertexAttribArray(colorLoc);
+   gl.enableVertexAttribArray(colorLoc);*/
  
    // ==== bind and send vertex info for cube to vertex shader ====
    projectionMatrix = perspective(fovy, aspect, near, far);
@@ -952,41 +959,15 @@ function render() {
      gl.STATIC_DRAW
    );
     
-   viewerPos = vec3(0.0, 0.0, -20.0);
-
-    projectionMatrix = ortho(-1, 1, -1, 1, -100, 100);
-
-    var ambientProduct = mult(lightAmbient, materialAmbient);
-    var diffuseProduct = mult(lightDiffuse, materialDiffuse);
-    var specularProduct = mult(lightSpecular, materialSpecular);
-
-    var normalLoc = gl.getAttribLocation(program, "aNormal");
-    gl.vertexAttribPointer(normalLoc, 3, gl.FLOAT, false, 0, 0);
-    gl.enableVertexAttribArray(normalLoc);
-
-    gl.uniform4fv(gl.getUniformLocation(program, "uAmbientProduct"),
-       ambientProduct);
-    gl.uniform4fv(gl.getUniformLocation(program, "uDiffuseProduct"),
-       diffuseProduct );
-    gl.uniform4fv(gl.getUniformLocation(program, "uSpecularProduct"),
-       specularProduct );
-    gl.uniform4fv(gl.getUniformLocation(program, "uLightPosition"),
-       lightPosition );
-
-    gl.uniform1f(gl.getUniformLocation(program,
-       "uShininess"), materialShininess);
-
-    gl.uniformMatrix4fv( gl.getUniformLocation(program, "uProjectionMatrix"),
-       false, flatten(projectionMatrix));
        
    // ==== color buffer for cube ====
-   var cBuffer = gl.createBuffer();
+   /*var cBuffer = gl.createBuffer();
    gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
    gl.bufferData(gl.ARRAY_BUFFER, flatten(vertexColorsT), gl.STATIC_DRAW);
  
    var colorLoc = gl.getAttribLocation(program, "aColor");
    gl.vertexAttribPointer(colorLoc, 4, gl.FLOAT, false, 0, 0);
-   gl.enableVertexAttribArray(colorLoc);
+   gl.enableVertexAttribArray(colorLoc);*/
  
    // ==== bind and send vertex info for cube to vertex shader ====
    projectionMatrix = perspective(fovy, aspect, near, far);
@@ -1014,7 +995,7 @@ function render() {
    gl.uniformMatrix4fv(projectionMatrixLoc, false, flatten(projectionMatrix));
    gl.drawElements(gl.TRIANGLE_FAN, numPosT, gl.UNSIGNED_BYTE, 0);
 
-   /*viewerPos = vec3(0.0, 0.0, -20.0);
+   viewerPos = vec3(0.0, 0.0, -20.0);
 
     projectionMatrix = ortho(-1, 1, -1, 1, -100, 100);
 
@@ -1039,7 +1020,7 @@ function render() {
        "uShininess"), materialShininess);
 
     gl.uniformMatrix4fv( gl.getUniformLocation(program, "uProjectionMatrix"),
-       false, flatten(projectionMatrix));*/
+       false, flatten(projectionMatrix));
 
   requestAnimationFrame(render);
 }
